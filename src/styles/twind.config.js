@@ -1,17 +1,6 @@
 import { defineConfig } from '@twind/core';
 import presetTailwind from '@twind/preset-tailwind';
 
-// #ADA8B6
-// #FFEEDB
-// #4C3B4D
-// #A53860
-// #61C9A8
-//
-// #612940
-// #292F36
-//
-// #FFC799
-
 export const twindConfig = defineConfig({
     darkMode: 'class',
     presets: [presetTailwind()],
