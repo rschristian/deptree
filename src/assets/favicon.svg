@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="200px" height="200px" viewBox="0 0 60 60" fill="#000" >
+  <style>
+    path {
+      fill: black;
+    }
+    @media (prefers-color-scheme: dark) {
+      path {
+        fill: white;
+      }
+    }
+  </style>
+  <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+  <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+  <g id="SVGRepo_iconCarrier">
+    <g>
+      <path d="M12,0h-2H0v48v2v10h48h2h10V12v-2V0H12z M48,39.045L39.045,48H30.56L48,30.56V39.045z M48,41.873V48h-6.127L48,41.873z M27.731,48h-8.485L48,19.246v8.485L27.731,48z M48,16.418L16.418,48H12v-4.067L43.932,12H48V16.418z M12,41.104v-8.485L32.619,12 h8.485L12,41.104z M12,29.791v-8.486L21.305,12h8.486L12,29.791z M12,18.477V12h6.477L12,18.477z M2,2h8v10v8.477v14.143v8.485V48 H2V2z M48,58H2v-8h8h2h5.246h8.485h14.142H48V58z M58,58h-8V48v-8.127V25.731v-8.485V12h8V58z M50,10h-2h-4.896h-8.485H20.477H12V2 h46v8H50z"></path>
+      <circle cx="55" cy="4" r="1"></circle>
+      <circle cx="51" cy="4" r="1"></circle>
+      <circle cx="55" cy="8" r="1"></circle>
+      <circle cx="51" cy="8" r="1"></circle>
+      <circle cx="56" cy="55" r="1"></circle>
+      <circle cx="56" cy="51" r="1"></circle>
+      <circle cx="52" cy="55" r="1"></circle>
+      <circle cx="52" cy="51" r="1"></circle>
+      <circle cx="5" cy="56" r="1"></circle>
+      <circle cx="9" cy="56" r="1"></circle>
+      <circle cx="5" cy="52" r="1"></circle>
+      <circle cx="9" cy="52" r="1"></circle>
+      <circle cx="4" cy="5" r="1"></circle>
+      <circle cx="4" cy="9" r="1"></circle>
+      <circle cx="8" cy="5" r="1"></circle>
+      <circle cx="8" cy="9" r="1"></circle>
+    </g>
+  </g>
+</svg>
