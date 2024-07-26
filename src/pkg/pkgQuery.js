@@ -12,14 +12,15 @@ function errorResponse(message) {
 export async function getPackageData(pkgQuery) {
     const pkgQueries = pkgQuery.toLowerCase().split(',');
 
-    let moduleTrees = [];
+    const moduleTrees = [];
+    let uniqueModules = new Set();
     const stats = {
         moduleCount: 0,
         nodeCount: 0,
     }
 
-    try {
-        for (const query of pkgQueries) {
+    for (const query of pkgQueries) {
+        try {
             if (!query) errorResponse('Missing package query');
             if (!/^(?:@.+\/[a-z]|[a-z])/.test(query))
                 errorResponse(
@@ -27,17 +28,18 @@ export async function getPackageData(pkgQuery) {
                 );
 
             const [entryModule, graph] = await walkModuleGraph(query);
-            const [moduleTree, nodeCount] = formTreeFromGraph(graph.get(entryModule.key), graph);
+            const [moduleTree, uModules, nodeCount] = formTreeFromGraph(graph.get(entryModule.key), graph);
 
             moduleTrees.push(moduleTree);
             stats.nodeCount += nodeCount;
-            stats.moduleCount += graph.size;
-        }
 
-    } catch (e) {
-        errorResponse(e.message);
+            uniqueModules = new Set([...uniqueModules, ...uModules]);
+        } catch (e) {
+            errorResponse(e.message);
+        }
     }
 
+    stats.moduleCount = uniqueModules.size;
     return { moduleTrees, stats };
 }
 
@@ -97,11 +99,13 @@ async function walkModuleGraph(query) {
 /**
  * @param {ModuleInfo} entryModule
  * @param {Graph} graph
- * @returns {[Object, number]}
+ * @returns {[Object, Set<string>, number]}
  */
 function formTreeFromGraph(entryModule, graph) {
     let moduleTree = {};
     const parentNodes = new Set();
+
+    const uniqueModules = new Set();
     let nodeCount = 0;
 
     /**
@@ -116,6 +120,7 @@ function formTreeFromGraph(entryModule, graph) {
             version: module.module.pkg.version,
             ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
         };
+        uniqueModules.add(m.name);
 
         if (shouldWalk) {
             parentNodes.add(m.name);
@@ -130,5 +135,5 @@ function formTreeFromGraph(entryModule, graph) {
     };
 
     if (entryModule) _walk(entryModule);
-    return [moduleTree, nodeCount];
+    return [moduleTree, uniqueModules, nodeCount];
 }
