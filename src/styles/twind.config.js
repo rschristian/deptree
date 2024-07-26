@@ -35,6 +35,11 @@ export const twindConfig = defineConfig({
                 DEFAULT: '#f8f8f8',
                 dark: '#282828',
             },
+            replacement: {
+                native: '#F66151',
+                micro: '#F9F06B',
+                preferred: '#99C1F1',
+            },
             white: {
                 muted: '#999',
             },
@@ -43,6 +48,7 @@ export const twindConfig = defineConfig({
         fontSize: {
             xs: '.75rem',
             base: '1rem',
+            '2xl': '1.5rem',
             '3xl': '1.875rem',
             '4xl': '2.5rem',
         },

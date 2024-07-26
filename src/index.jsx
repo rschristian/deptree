@@ -2,8 +2,15 @@ import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { Root, Main, Header, Footer } from '@rschristian/intrepid-design';
 import { withTwind } from '@rschristian/twind-preact-iso';
 import Hint from 'preact-hint';
+import nativeReplacements from 'module-replacements/manifests/native.json';
+import microUtilsReplacements from 'module-replacements/manifests/micro-utilities.json';
+//import preferredReplacements from 'module-replacements/manifests/preferred.json';
 
 import { getPackageData } from './pkg/pkgQuery.js';
+
+const NATIVE = nativeReplacements.moduleReplacements;
+const MICRO = microUtilsReplacements.moduleReplacements;
+//const PREFERRED = preferredReplacements.moduleReplacements;
 
 export function App() {
     const [pkgQuery, setPkgQuery] = useState('');
@@ -151,6 +158,26 @@ function DataBox({ queryResult }) {
 
     return (
         <>
+            {!queryResult.error && (
+                <>
+                    <h2 class="mb-4 text(left 2xl) font-semibold">Coming Soon: Replacement hints & tips</h2>
+                    <div class="flex(& col md:row) items-start">
+                        Key:
+                        <div class="flex items-center ml-4">
+                            <span class="inline-block w-4 h-4 mr-2 bg-replacement-native"></span>
+                            - Has native replacement
+                        </div>
+                        <div class="flex items-center ml-4">
+                            <span class="inline-block w-4 h-4 mr-2 bg-replacement-micro"></span>
+                            - Is micro utility
+                        </div>
+                        {/*<div class="flex items-center ml-4">
+                            <span class="inline-block w-4 h-4 mr-2 bg-replacement-preferred"></span>
+                            - Has preferred replacement
+                        </div>*/}
+                    </div>
+                </>
+            )}
             <section class={`relative mt-8 p-4 border(& ${queryResult.error ? 'red' : 'resultBorder'} 1) rounded`}>
                 {!queryResult.error && (
                     <Hint template={() => (
@@ -180,6 +207,14 @@ function DataBox({ queryResult }) {
             </section>
             {!queryResult.error && (
                 <p class="mt-4">
+                    Module data is provided by the lovely contributors at{' '}
+                    <a
+                        class="underline text-primary hocus:opacity-80"
+                        href="https://github.com/es-tooling/module-replacements"
+                        target="_blank"
+                    >
+                        es-tooling/module-replacements
+                    </a>
                 </p>
             )}
         </>
@@ -194,12 +229,18 @@ function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
         childPrefix += (isLast ? ' ' : '│').padEnd(8, ' ');
     }
 
+    const check = list => list.some(({ moduleName }) => moduleName === pkg.name);
+    let decoration = '';
+    if (check(NATIVE)) decoration = 'underline(& offset-4) decoration-replacement-native';
+    if (check(MICRO)) decoration = 'underline(& offset-4) decoration-replacement-micro';
+    //if (check(PREFERRED)) decoration = 'underline(& offset-4) decoration-replacement-preferred';
+
     return (
         <div class={depth == 0 && 'mb-4 last:mb-2' || depth == 1 && 'ml-4'}>
             <pre class="w-max">
                 {lineSymbol}
                 <a
-                    class="px-1 py-0.5 text-highlightContent(& dark:dark) bg-highlight(& dark:dark) rounded hocus:(opacity-80 outline(1 & primary))"
+                    class={`px-1 py-0.5 text-highlightContent(& dark:dark) bg-highlight(& dark:dark) rounded hocus:(opacity-80 outline(1 & primary)) ${decoration}`}
                     href={`https://npm.im/${pkg.name}`}
                     target="_blank"
                     rel="noopener noreferrer"
