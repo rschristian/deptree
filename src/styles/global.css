@@ -48,13 +48,22 @@ svg {
 }
 
 .preact-hint__content {
+  padding: 0.25rem 0.5rem;
   color: #333;
   background: #f5f5f5;
+}
+
+.preact-hint::after {
+  border-top-color: #f5f5f5;
 }
 
 .dark .preact-hint__content {
   color: #eee;
   background: #282828;
+}
+
+.dark .preact-hint::after {
+  border-top-color: #282828;
 }
 
 /* custom file input button shenanigans */
