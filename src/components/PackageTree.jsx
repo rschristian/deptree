@@ -1,11 +1,3 @@
-import nativeReplacements from 'module-replacements/manifests/native.json';
-import microUtilsReplacements from 'module-replacements/manifests/micro-utilities.json';
-//import preferredReplacements from 'module-replacements/manifests/preferred.json';
-
-const NATIVE = nativeReplacements.moduleReplacements;
-const MICRO = microUtilsReplacements.moduleReplacements;
-//const PREFERRED = preferredReplacements.moduleReplacements;
-
 export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
     let lineSymbol = prefix;
     let childPrefix = prefix;
@@ -14,11 +6,9 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
         childPrefix += (isLast ? ' ' : '│').padEnd(8, ' ');
     }
 
-    const check = list => list.some(({ moduleName }) => moduleName === pkg.name);
-    let decoration = '';
-    if (check(NATIVE)) decoration = 'underline(& offset-4) decoration-replacement-native';
-    if (check(MICRO)) decoration = 'underline(& offset-4) decoration-replacement-micro';
-    //if (check(PREFERRED)) decoration = 'underline(& offset-4) decoration-replacement-preferred';
+    const decoration = pkg.type
+        ? `underline(& offset-4) decoration-replacement-${pkg.type}`
+        : '';
 
     return (
         <div class={depth == 0 && 'mb-4 last:mb-2' || depth == 1 && 'ml-4'}>
@@ -29,6 +19,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
                     href={`https://npm.im/${pkg.name}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    data-hint={pkg.replacement ? pkg.replacement : ''}
                 >
                     {`${pkg.name}@${pkg.version}`}
                 </a>
