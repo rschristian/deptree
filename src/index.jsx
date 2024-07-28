@@ -85,7 +85,7 @@ export function App() {
                                 autocorrect="off"
                                 autocapitalize="none"
                                 enterkeyhint="search"
-                                class="py-2 px-4 w-full text(3xl center [#111]) bg-input(& dark:dark) drop-shadow-lg rounded-lg hocus:(outline(2 & primary))"
+                                class="py-2 px-4 w-full text(xl md:3xl center [#111]) bg-input(& dark:dark) drop-shadow-lg rounded-lg hocus:(outline(2 & primary))"
                                 placeholder="Provide a package name"
                                 value={pkgQuery}
                                 onInput={(e) =>
