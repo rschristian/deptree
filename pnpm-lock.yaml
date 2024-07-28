@@ -35,8 +35,8 @@ importers:
         specifier: ^10.22.0
         version: 10.22.0
       preact-hint:
-        specifier: ^0.2.0
-        version: 0.2.0(preact@10.22.0)
+        specifier: ^0.3.0
+        version: 0.3.0(preact@10.22.0)
       preact-iso:
         specifier: ^2.6.3
         version: 2.6.3(preact-render-to-string@6.5.4(preact@10.22.0))(preact@10.22.0)
@@ -787,8 +787,8 @@ packages:
     resolution: {integrity: sha512-0vzE+lAiG7hZl1/9I8yzKLx3aR9Xbof3fBHKunvMfOCYAtMhrsnccJY2iTURb9EZd5+pLuiNV9/c/GZJOHsgIw==}
     engines: {node: ^10 || ^12 || >=14}
 
-  preact-hint@0.2.0:
-    resolution: {integrity: sha512-OCrwBOEQYIKvIDaZRnsLw5hCiZzMCwSlhnKTQD3EwD9GDMksSjkLRd9mU0k9tIgAQLD7pWb1BFtvGu6fycYVJw==}
+  preact-hint@0.3.0:
+    resolution: {integrity: sha512-Izl8cJUbNg+YNBI+OT51ccgX7bkMCnv9UvX0+xU9EOY3H/m2/Fz52nsbbSrTzE5K+xnaSWhSAOKphVAqwsRcDg==}
     peerDependencies:
       preact: '*'
 
@@ -1629,7 +1629,7 @@ snapshots:
       picocolors: 1.0.1
       source-map-js: 1.2.0
 
-  preact-hint@0.2.0(preact@10.22.0):
+  preact-hint@0.3.0(preact@10.22.0):
     dependencies:
       preact: 10.22.0
 
