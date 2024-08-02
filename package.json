@@ -13,7 +13,7 @@
     "@sovereignjs/core": "^0.1.4",
     "@twind/core": "^1.1.3",
     "@twind/preset-tailwind": "^1.1.4",
-    "module-replacements": "^2.2.0",
+    "module-replacements": "^2.3.0",
     "preact": "^10.22.0",
     "preact-hint": "^0.3.0",
     "preact-iso": "^2.6.3",
@@ -25,10 +25,5 @@
     "prettier": "^2.8.8",
     "prettier-config-rschristian": "^0.1.1"
   },
-  "prettier": "prettier-config-rschristian",
-  "pnpm": {
-    "patchedDependencies": {
-      "module-replacements@2.2.0": "patches/module-replacements@2.2.0.patch"
-    }
-  }
+  "prettier": "prettier-config-rschristian"
 }
