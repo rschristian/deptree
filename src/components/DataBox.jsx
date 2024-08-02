@@ -77,7 +77,7 @@ export function DataBox({ queryResult }) {
                 <p class="mt-4">
                     Module data is provided by the lovely contributors at{' '}
                     <a
-                        class="underline text-primary hocus:opacity-80"
+                        class="underline dark:text-primary) hocus:opacity-80"
                         href="https://github.com/es-tooling/module-replacements"
                         target="_blank"
                     >
