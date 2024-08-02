@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 patchedDependencies:
+  '@preact/preset-vite@2.9.0':
+    hash: mcqlr5jhsoqjk2mlhu2lxiqfpa
+    path: patches/@preact__preset-vite@2.9.0.patch
   module-replacements@2.2.0:
     hash: dpxnjtnjnwswqctat26axkdyzu
     path: patches/module-replacements@2.2.0.patch
@@ -1249,7 +1252,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.4.15
 
-  '@preact/preset-vite@2.9.0(@babel/core@7.24.6)(preact@10.22.0)(vite@5.3.4(terser@5.31.0))':
+  '@preact/preset-vite@2.9.0(patch_hash=mcqlr5jhsoqjk2mlhu2lxiqfpa)(@babel/core@7.24.6)(preact@10.22.0)(vite@5.3.4(terser@5.31.0))':
     dependencies:
       '@babel/code-frame': 7.24.6
       '@babel/core': 7.24.6
@@ -1369,7 +1372,7 @@ snapshots:
 
   '@sovereignjs/core@0.1.4(@babel/core@7.24.6)(preact@10.22.0)(rollup@4.19.0)(terser@5.31.0)':
     dependencies:
-      '@preact/preset-vite': 2.9.0(@babel/core@7.24.6)(preact@10.22.0)(vite@5.3.4(terser@5.31.0))
+      '@preact/preset-vite': 2.9.0(patch_hash=mcqlr5jhsoqjk2mlhu2lxiqfpa)(@babel/core@7.24.6)(preact@10.22.0)(vite@5.3.4(terser@5.31.0))
       '@rollup/plugin-replace': 5.0.5(rollup@4.19.0)
       html-minifier-terser: 7.2.0
       kolorist: 1.8.0

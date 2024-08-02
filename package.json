@@ -28,7 +28,8 @@
   "prettier": "prettier-config-rschristian",
   "pnpm": {
     "patchedDependencies": {
-      "module-replacements@2.2.0": "patches/module-replacements@2.2.0.patch"
+      "module-replacements@2.2.0": "patches/module-replacements@2.2.0.patch",
+      "@preact/preset-vite@2.9.0": "patches/@preact__preset-vite@2.9.0.patch"
     }
   }
 }
