@@ -167,7 +167,7 @@ function checkForReplacements(module) {
  * @param {ModuleInfo} entryModule
  * @param {Graph} graph
  * @returns {{
-     * moduleTree: Module,
+     * moduleTree: Object,
      * nodeCount: number,
      * uniqueModules: Set<string>,
      * nativeReplacements: Set<string>,
@@ -214,6 +214,5 @@ function formTreeFromGraph(entryModule, graph) {
     };
 
     if (entryModule) _walk(entryModule);
-    // @ts-ignore
     return { moduleTree, uniqueModules, nodeCount, nativeReplacements, microReplacements };
 }

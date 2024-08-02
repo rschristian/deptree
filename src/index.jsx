@@ -107,6 +107,9 @@ export function App() {
                             </label>
                         </div>
                     </form>
+                    <p class="text-xs">
+                        Do be warned with package.json upload, this can result in a massive number of network requests and DOM nodes
+                    </p>
                     {inProgress && <span class="loader mt-8 p-4"></span>}
                     {queryResult && <DataBox queryResult={queryResult} />}
                 </div>

@@ -39,7 +39,7 @@ export function DataBox({ queryResult }) {
     return (
         <>
             {!queryResult.error && <Key />}
-            <section class={`relative mt-8 p-4 border(& ${queryResult.error ? 'red' : 'resultBorder'} 1) rounded`}>
+            <section class={`relative p-4 border(& ${queryResult.error ? 'red' : 'resultBorder'} 1) rounded`}>
                 {!queryResult.error && (
                     <Hint template={() => (
                         <div class="text-left">
@@ -91,7 +91,7 @@ export function DataBox({ queryResult }) {
 
 function Key() {
     return (
-        <div class="flex(& col md:row) items-start">
+        <div class="flex(& col md:row) items-start my-8">
             Key:
             <div class="flex items-center ml-4">
                 <span class="inline-block w-4 h-4 mr-2 bg-replacement-native"></span>
