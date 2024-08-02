@@ -7,7 +7,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
     }
 
     const decoration = pkg.type
-        ? `underline(& offset-4) decoration(2 replacement-${pkg.type})`
+        ? `underline(& offset-4) decoration(2 replacement-${pkg.type}(& dark:dark))`
         : '';
 
     return (

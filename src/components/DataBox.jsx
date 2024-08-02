@@ -38,21 +38,23 @@ export function DataBox({ queryResult }) {
 
     return (
         <>
-            {!queryResult.error && <Key />}
-            <section class={`relative p-4 border(& ${queryResult.error ? 'red' : 'resultBorder'} 1) rounded`}>
+            <section class={`relative mt-8 p-4 border(& ${queryResult.error ? 'red' : 'resultBorder'} 1) rounded`}>
                 {!queryResult.error && (
-                    <Hint template={() => (
-                        <div class="text-left">
-                            Module Count: {queryResult.stats.moduleCount}<br />
-                            Modules with Native Replacement: {queryResult.stats.nativeCount}<br />
-                            Micro Utility Modules: {queryResult.stats.microCount}<br />
-                            Total Number of Nodes: {queryResult.stats.nodeCount}
-                        </div>
-                    )}>
-                        <svg data-hint=" " class="absolute right-0 z-50">
-                            <use href="/assets/icons.svg#info" />
-                        </svg>
-                    </Hint>
+                    <>
+                        <Hint template={() => (
+                            <div class="text-left">
+                                Module Count: {queryResult.stats.moduleCount}<br />
+                                Modules with Native Replacement: {queryResult.stats.nativeCount}<br />
+                                Micro Utility Modules: {queryResult.stats.microCount}<br />
+                                Total Number of Nodes: {queryResult.stats.nodeCount}
+                            </div>
+                        )}>
+                            <svg tabindex={0} data-hint=" " class="absolute right-0 z-50">
+                                <use href="/assets/icons.svg#info" />
+                            </svg>
+                        </Hint>
+                        <Key />
+                    </>
                 )}
                 <Hint template={(content) => (
                     <p>Replace with `<span class="font-bold">{content}</span>`</p>
@@ -91,20 +93,18 @@ export function DataBox({ queryResult }) {
 
 function Key() {
     return (
-        <div class="flex(& col md:row) items-start my-8">
-            Key:
-            <div class="flex items-center ml-4">
-                <span class="inline-block w-4 h-4 mr-2 bg-replacement-native"></span>
-                - Has native replacement
+        <div class="fixed w-10/12 md:w-auto left-2/4 -translate-x-2/4 bottom-12 py-1 px-2 bg-card(& dark:dark) border(& resultBorder 1) rounded z-50">
+            <div class="flex(& col md:row) items-start">
+                Key:
+                <div class="flex items-center ml-4">
+                    <span class="inline-block w-4 h-4 mr-2 bg-replacement-native(& dark:dark)"></span>
+                    - Has native replacement
+                </div>
+                <div class="flex items-center ml-4">
+                    <span class="inline-block w-4 h-4 mr-2 bg-replacement-micro(& dark:dark)"></span>
+                    - Is micro utility
+                </div>
             </div>
-            <div class="flex items-center ml-4">
-                <span class="inline-block w-4 h-4 mr-2 bg-replacement-micro"></span>
-                - Is micro utility
-            </div>
-            {/*<div class="flex items-center ml-4">
-                <span class="inline-block w-4 h-4 mr-2 bg-replacement-preferred"></span>
-                - Has preferred replacement
-            </div>*/}
         </div>
     );
 }
