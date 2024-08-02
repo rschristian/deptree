@@ -100,6 +100,9 @@ export async function getModule(name, version) {
         /** @type {Maintainers[]} */
         let maintainers
         try {
+            const res = await fetch(`${NPM_REGISTRY}/${name}`);
+            if (!res.ok) throw res;
+
             /** @type {PackageMetaData} */
             const pkgMeta = await (await fetch(`${NPM_REGISTRY}/${name}`)).json();
 
@@ -109,6 +112,9 @@ export async function getModule(name, version) {
             pkg = pkgMeta.versions[version];
             maintainers = pkgMeta.maintainers;
         } catch (e) {
+            const privateWarning = '\nPlease note that private packages are not supported.'
+            if (e.status && e.status == 404) throw new Error(`Package '${name}' not found.${privateWarning}`);
+            e.message = e.message.replace(/resource\.$/, `package: ${name}.${privateWarning}`);
             throw new Error(e);
         }
 

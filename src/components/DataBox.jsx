@@ -57,18 +57,19 @@ export function DataBox({ queryResult }) {
                 <Hint template={(content) => (
                     <p>Replace with `<span class="font-bold">{content}</span>`</p>
                 )}>
-                    <div
-                        ref={container}
-                        class="overflow-x-auto p-0.5"
-                        onMouseMove={move}
-                        onMouseDown={startDragging}
-                        onMouseUp={stopDragging}
-                        onMouseLeave={stopDragging}
-                    >
-                            {queryResult.error
-                                ? queryResult.error
-                                : queryResult.moduleTrees.map(pkg => <PackageTree pkg={pkg} />)
-                            }
+                    <div class="overflow-x-auto p-0.5">
+                        {queryResult.error
+                            ? <p class="whitespace-pre">{queryResult.error}</p>
+                            : <div
+                                ref={container}
+                                onMouseMove={move}
+                                onMouseDown={startDragging}
+                                onMouseUp={stopDragging}
+                                onMouseLeave={stopDragging}
+                            >
+                                {queryResult.moduleTrees.map(pkg => <PackageTree pkg={pkg} />)}
+                            </div>
+                        }
                     </div>
                 </Hint>
             </section>
