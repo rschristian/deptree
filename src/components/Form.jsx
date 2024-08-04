@@ -43,7 +43,7 @@ export function PackageForm({ setQueryResult, fetchPkgTree }) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const pkgQuery = new FormData(formRef.current).get('pkgQuery');
+        const pkgQuery = /** @type {string} */ (new FormData(formRef.current).get('pkgQuery')).trim();
         if (pkgQuery) fetchPkgTree(pkgQuery);
     };
 
