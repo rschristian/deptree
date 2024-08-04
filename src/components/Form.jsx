@@ -46,7 +46,11 @@ export function PackageForm({ setQueryResult, fetchPkgTree }) {
                     enterkeyhint="search"
                     class="py-2 px-4 w-full text(xl md:3xl center [#111]) bg-input(& dark:dark) drop-shadow-lg rounded-lg hocus:(outline(2 & primary))"
                     placeholder="Provide a package name"
-                    defaultValue={new URLSearchParams(window.location.search).get('q') || ''}
+                    defaultValue={
+                        (typeof window !== 'undefined' &&
+                            new URLSearchParams(window.location.search).get('q')) ||
+                        ''
+                    }
                 />
                 <span class="mx-4 my(4 md:0)">Or...</span>
                 <input
