@@ -70,7 +70,7 @@ svg {
 }
 
 #file-upload + label {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 #file-upload:focus + label,

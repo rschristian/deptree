@@ -11,7 +11,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
         : '';
 
     return (
-        <div class={depth == 0 && 'mb-4 last:mb-2' || depth == 1 && 'ml-4'}>
+        <div class={(depth == 0 && 'mb-4 last:mb-2') || (depth == 1 && 'ml-4')}>
             <pre class="w-max">
                 {lineSymbol}
                 <a

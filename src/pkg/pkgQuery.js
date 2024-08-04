@@ -1,14 +1,15 @@
 import nativeReplacements from 'module-replacements/manifests/native.json';
 import microUtilsReplacements from 'module-replacements/manifests/micro-utilities.json';
-//import preferredReplacements from 'module-replacements/manifests/preferred.json';
-
-// TODO: Can probably patch the module instead of sorting per-request
-const NATIVE = nativeReplacements.moduleReplacements.sort((a, b) => a.moduleName.localeCompare(b.moduleName));
-const MICRO = microUtilsReplacements.moduleReplacements.sort((a, b) => a.moduleName.localeCompare(b.moduleName));
-// TODO: Some of the preferred "replacements" are the same module, not sure what's going on there
-//const PREFERRED = preferredReplacements.moduleReplacements;
 
 import { getModule } from './registry.js';
+
+// TODO: Can probably patch the module instead of sorting per-request
+const NATIVE = nativeReplacements.moduleReplacements.sort((a, b) =>
+    a.moduleName.localeCompare(b.moduleName),
+);
+const MICRO = microUtilsReplacements.moduleReplacements.sort((a, b) =>
+    a.moduleName.localeCompare(b.moduleName),
+);
 
 /**
  * @param {string} message
@@ -26,14 +27,12 @@ export async function getPackageData(pkgQuery) {
     let uniqueModules = new Set();
     let nativeReplacements = new Set();
     let microReplacements = new Set();
-    //let preferredReplacements = new Set();
     const stats = {
         moduleCount: 0,
         nodeCount: 0,
         nativeCount: 0,
         microCount: 0,
-        //preferredCount: 0,
-    }
+    };
 
     for (const query of pkgQueries) {
         try {
@@ -49,7 +48,7 @@ export async function getPackageData(pkgQuery) {
                 nodeCount,
                 uniqueModules: uModules,
                 nativeReplacements: nReplacements,
-                microReplacements: mReplacements
+                microReplacements: mReplacements,
             } = formTreeFromGraph(graph.get(entryModule.key), graph);
 
             moduleTrees.push(moduleTree);
@@ -148,7 +147,7 @@ function binarySearch(sortedReplacements, moduleName) {
 
 /**
  * @param {string} module
- * @returns {{ type: 'native' | 'micro' | 'preferred', replacementString: string } | null}
+ * @returns {{ type: 'native' | 'micro', replacementString: string } | null}
  */
 function checkForReplacements(module) {
     for (const [type, replacementList] of [NATIVE, MICRO].entries()) {
@@ -156,7 +155,7 @@ function checkForReplacements(module) {
         if (replacement) {
             return {
                 type: type === 0 ? 'native' : 'micro',
-                replacementString: replacement.replacement
+                replacementString: replacement.replacement,
             };
         }
     }
@@ -194,7 +193,10 @@ function formTreeFromGraph(entryModule, graph) {
         const m = {
             name: module.module.pkg.name,
             version: module.module.pkg.version,
-            ...(replacement && { type: replacement.type, replacement: replacement.replacementString }),
+            ...(replacement && {
+                type: replacement.type,
+                replacement: replacement.replacementString,
+            }),
             ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
         };
         uniqueModules.add(m.name);

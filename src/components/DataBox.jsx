@@ -38,17 +38,26 @@ export function DataBox({ queryResult }) {
 
     return (
         <>
-            <section class={`relative mt-8 p-4 border(& ${queryResult.error ? 'red' : 'resultBorder'} 1) rounded`}>
+            <section
+                class={`relative mt-8 p-4 border(& ${
+                    queryResult.error ? 'red' : 'resultBorder'
+                } 1) rounded`}
+            >
                 {!queryResult.error && (
                     <>
-                        <Hint template={() => (
-                            <div class="text-left">
-                                Module Count: {queryResult.stats.moduleCount}<br />
-                                Modules with Native Replacement: {queryResult.stats.nativeCount}<br />
-                                Micro Utility Modules: {queryResult.stats.microCount}<br />
-                                Total Number of Nodes: {queryResult.stats.nodeCount}
-                            </div>
-                        )}>
+                        <Hint
+                            template={() => (
+                                <div class="text-left">
+                                    Module Count: {queryResult.stats.moduleCount}
+                                    <br />
+                                    Modules with Native Replacement: {queryResult.stats.nativeCount}
+                                    <br />
+                                    Micro Utility Modules: {queryResult.stats.microCount}
+                                    <br />
+                                    Total Number of Nodes: {queryResult.stats.nodeCount}
+                                </div>
+                            )}
+                        >
                             <svg tabindex={0} data-hint=" " class="absolute right-0 z-50">
                                 <use href="/assets/icons.svg#info" />
                             </svg>
@@ -56,21 +65,26 @@ export function DataBox({ queryResult }) {
                         <Key />
                     </>
                 )}
-                <Hint template={(content) => (
-                    <p>Replace with `<span class="font-bold">{content}</span>`</p>
-                )}>
-                    <div class="overflow-x-auto p-0.5">
+                <Hint
+                    template={(content) => (
+                        <p>
+                            Replace with `<span class="font-bold">{content}</span>`
+                        </p>
+                    )}
+                >
+                    <div
+                        ref={container}
+                        class="overflow-x-auto p-0.5"
+                        {...(!queryResult.error && {
+                            onMouseMove: move,
+                            onMouseDown: startDragging,
+                            onMouseUp: stopDragging,
+                            onMouseLeave: stopDragging,
+                        })}
+                    >
                         {queryResult.error
                             ? <p class="whitespace-pre">{queryResult.error}</p>
-                            : <div
-                                ref={container}
-                                onMouseMove={move}
-                                onMouseDown={startDragging}
-                                onMouseUp={stopDragging}
-                                onMouseLeave={stopDragging}
-                            >
-                                {queryResult.moduleTrees.map(pkg => <PackageTree pkg={pkg} />)}
-                            </div>
+                            : queryResult.moduleTrees.map((pkg) => <PackageTree pkg={pkg} />)
                         }
                     </div>
                 </Hint>

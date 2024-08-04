@@ -77,7 +77,8 @@ export function App() {
                 <div class="h-fit w(full md:10/12) 2xl:mt-[5vh] p(4 md:8) text-center bg-card(& dark:dark) rounded-xl">
                     <h1 class="text-4xl font-bold">DepTree</h1>
                     <p class="p-2">
-                        Visualize the dependency tree of a package or project to see where you might want to optimize
+                        Visualize the dependency tree of a package or project to see where you might
+                        want to optimize
                     </p>
                     <form onSubmit={onSubmit}>
                         <div class="flex(& col md:row) my-8 items-center">
@@ -108,7 +109,8 @@ export function App() {
                         </div>
                     </form>
                     <p class="text-xs">
-                        Do be warned with package.json upload, this can result in a massive number of network requests and DOM nodes
+                        Do be warned with package.json upload, this can result in a massive number
+                        of network requests and DOM nodes
                     </p>
                     {inProgress && <span class="loader mt-8 p-4"></span>}
                     {queryResult && <DataBox queryResult={queryResult} />}
