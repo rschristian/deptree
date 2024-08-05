@@ -34,33 +34,40 @@ export async function getPackageData(pkgQuery) {
         microCount: 0,
     };
 
-    for (const query of pkgQueries) {
-        try {
-            if (!query) errorResponse('Missing package query');
-            if (!/^(?:@.+\/[a-z]|[a-z])/.test(query))
-                errorResponse(
-                    'Invalid package query, see: https://docs.npmjs.com/cli/v10/configuring-npm/package-json#name',
-                );
+    const buildModuleTree = async (iter) => {
+        for (const [_i, query] of iter) {
+            try {
+                if (!query) errorResponse('Missing package query');
+                if (!/^(?:@.+\/[a-z]|[a-z])/.test(query))
+                    errorResponse(
+                        'Invalid package query, see: https://docs.npmjs.com/cli/v10/configuring-npm/package-json#name',
+                    );
 
-            const [entryModule, graph] = await walkModuleGraph(query);
-            const {
-                moduleTree,
-                nodeCount,
-                uniqueModules: uModules,
-                nativeReplacements: nReplacements,
-                microReplacements: mReplacements,
-            } = formTreeFromGraph(graph.get(entryModule.key), graph);
+                const [entryModule, graph] = await walkModuleGraph(query);
+                const {
+                    moduleTree,
+                    nodeCount,
+                    uniqueModules: uModules,
+                    nativeReplacements: nReplacements,
+                    microReplacements: mReplacements,
+                } = formTreeFromGraph(graph.get(entryModule.key), graph);
 
-            moduleTrees.push(moduleTree);
-            stats.nodeCount += nodeCount;
+                moduleTrees.push(moduleTree);
+                stats.nodeCount += nodeCount;
 
-            uniqueModules = new Set([...uniqueModules, ...uModules]);
-            nativeReplacements = new Set([...nativeReplacements, ...nReplacements]);
-            microReplacements = new Set([...microReplacements, ...mReplacements]);
-        } catch (e) {
-            errorResponse(e.message);
+                uniqueModules = new Set([...uniqueModules, ...uModules]);
+                nativeReplacements = new Set([...nativeReplacements, ...nReplacements]);
+                microReplacements = new Set([...microReplacements, ...mReplacements]);
+            } catch (e) {
+                errorResponse(e.message);
+            }
         }
     }
+
+    await Promise.all(
+        Array(5).fill(pkgQueries.entries()).map(buildModuleTree)
+    );
+    moduleTrees.sort((a, b) => a.name.localeCompare(b.name));
 
     stats.moduleCount = uniqueModules.size;
     stats.nativeCount = nativeReplacements.size;
