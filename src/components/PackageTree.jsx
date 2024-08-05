@@ -1,3 +1,10 @@
+/**
+ * @param {Object} props
+ * @param {import('../pkg/types.d.ts').ModuleTree} props.pkg
+ * @param {number} [props.depth=0]
+ * @param {boolean} [props.isLast=false]
+ * @param {string} [props.prefix='']
+ */
 export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
     let lineSymbol = prefix;
     let childPrefix = prefix;
@@ -6,8 +13,8 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
         childPrefix += (isLast ? ' ' : '│').padEnd(8, ' ');
     }
 
-    const decoration = pkg.type
-        ? `underline(& offset-4) decoration(2 replacement-${pkg.type}(& dark:dark))`
+    const decoration = pkg.replacement
+        ? `underline(& offset-4) decoration(2 replacement-${pkg.replacement.type}(& dark:dark))`
         : '';
 
     return (
@@ -19,7 +26,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
                     href={`https://npm.im/${pkg.name}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    data-hint={pkg.replacement ? pkg.replacement : ''}
+                    data-hint={pkg.replacement ? pkg.replacement.replacementString : ''}
                 >
                     {`${pkg.name}@${pkg.version}`}
                 </a>

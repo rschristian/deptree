@@ -79,6 +79,7 @@ export async function getPackageData(pkgQuery) {
  * @typedef {import('./types.d.ts').Module} Module
  * @typedef {import('./types.d.ts').ModuleInfo} ModuleInfo
  * @typedef {import('./types.d.ts').Graph} Graph
+ * @typedef {import('./types.d.ts').ModuleTree} ModuleTree
  */
 
 /**
@@ -173,7 +174,7 @@ function checkForReplacements(module) {
  * @param {ModuleInfo} entryModule
  * @param {Graph} graph
  * @returns {{
-     * moduleTree: Object,
+     * moduleTree: ModuleTree,
      * nodeCount: number,
      * uniqueModules: Set<string>,
      * nativeReplacements: Set<string>,
@@ -181,7 +182,7 @@ function checkForReplacements(module) {
  * }}
  */
 function formTreeFromGraph(entryModule, graph) {
-    let moduleTree = {};
+    let moduleTree = /** @type {ModuleTree} */ ({});
     const parentNodes = new Set();
 
     const uniqueModules = new Set();
@@ -200,15 +201,12 @@ function formTreeFromGraph(entryModule, graph) {
         const m = {
             name: module.module.pkg.name,
             version: module.module.pkg.version,
-            ...(replacement && {
-                type: replacement.type,
-                replacement: replacement.replacementString,
-            }),
             ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
+            replacement,
         };
         uniqueModules.add(m.name);
-        if (m.type == 'native') nativeReplacements.add(m.name);
-        if (m.type == 'micro') microReplacements.add(m.name);
+        if (replacement?.type == 'native') nativeReplacements.add(m.name);
+        if (replacement?.type == 'micro') microReplacements.add(m.name);
 
         if (shouldWalk) {
             parentNodes.add(m.name);

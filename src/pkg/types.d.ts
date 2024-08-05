@@ -39,3 +39,13 @@ export interface PackageMetaData {
     maintainers: Maintainers[];
     error?: string;
 }
+
+export interface ModuleTree {
+    name: string;
+    version: string;
+    dependencies?: ModuleTree[];
+    replacement?: {
+        type: 'native' | 'micro';
+        replacementString: string;
+    }
+}
