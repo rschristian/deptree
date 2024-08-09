@@ -2,7 +2,6 @@
 export interface Module {
     key: string;
     pkg: PackageData;
-    maintainers: Maintainers[];
 }
 
 export interface ModuleInfo {
@@ -20,7 +19,6 @@ export interface PackageData {
     dependencies?: Record<string, string>;
     devDependencies?: Record<string, string>;
     peerDependencies?: Record<string, string>;
-    maintainers?: { name: string; email: string }[];
 }
 
 export interface Maintainers {
@@ -36,7 +34,6 @@ export interface ModuleCacheEntry {
 export interface PackageMetaData {
     'dist-tags'?: Record<string, string>;
     versions: Record<string, PackageData>;
-    maintainers: Maintainers[];
     error?: string;
 }
 

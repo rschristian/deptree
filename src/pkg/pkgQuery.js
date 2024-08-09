@@ -47,7 +47,6 @@ export async function getPackageData(pkgQuery) {
                 const {
                     moduleTree,
                     nodeCount,
-                    uniqueModules: uModules,
                     nativeReplacements: nReplacements,
                     microReplacements: mReplacements,
                 } = formTreeFromGraph(graph.get(entryModule.key), graph);
@@ -55,7 +54,7 @@ export async function getPackageData(pkgQuery) {
                 moduleTrees.push(moduleTree);
                 stats.nodeCount += nodeCount;
 
-                uniqueModules = new Set([...uniqueModules, ...uModules]);
+                uniqueModules = new Set([...uniqueModules, ...graph.keys()]);
                 nativeReplacements = new Set([...nativeReplacements, ...nReplacements]);
                 microReplacements = new Set([...microReplacements, ...mReplacements]);
             } catch (e) {
@@ -176,7 +175,6 @@ function checkForReplacements(module) {
  * @returns {{
      * moduleTree: ModuleTree,
      * nodeCount: number,
-     * uniqueModules: Set<string>,
      * nativeReplacements: Set<string>,
      * microReplacements: Set<string>
  * }}
@@ -185,7 +183,6 @@ function formTreeFromGraph(entryModule, graph) {
     let moduleTree = /** @type {ModuleTree} */ ({});
     const parentNodes = new Set();
 
-    const uniqueModules = new Set();
     const nativeReplacements = new Set();
     const microReplacements = new Set();
     let nodeCount = 0;
@@ -204,7 +201,6 @@ function formTreeFromGraph(entryModule, graph) {
             ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
             replacement,
         };
-        uniqueModules.add(m.name);
         if (replacement?.type == 'native') nativeReplacements.add(m.name);
         if (replacement?.type == 'micro') microReplacements.add(m.name);
 
@@ -221,5 +217,5 @@ function formTreeFromGraph(entryModule, graph) {
     };
 
     if (entryModule) _walk(entryModule);
-    return { moduleTree, uniqueModules, nodeCount, nativeReplacements, microReplacements };
+    return { moduleTree, nodeCount, nativeReplacements, microReplacements };
 }
