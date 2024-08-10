@@ -79,6 +79,7 @@ export async function getPackageData(pkgQuery) {
  * @typedef {import('./types.d.ts').ModuleInfo} ModuleInfo
  * @typedef {import('./types.d.ts').Graph} Graph
  * @typedef {import('./types.d.ts').ModuleTree} ModuleTree
+ * @typedef {import('./types.d.ts').ModuleTreeCache} ModuleTreeCache
  */
 
 /**
@@ -183,29 +184,39 @@ function formTreeFromGraph(entryModule, graph) {
     const microReplacements = new Set();
     let nodeCount = 0;
 
+
+    /** @type {ModuleTreeCache} */
+    const moduleCache = new Map();
+
     /**
      * @param {ModuleInfo} module
      * @param {ModuleTree} [parent]
      */
     const _walk = (module, parent) => {
-        const shouldWalk = !parentNodes.has(module.module.pkg.name);
+        let m = moduleCache.get(module.module.key);
 
-        const replacement = checkForReplacements(module.module.pkg.name);
-        const m = {
-            name: module.module.pkg.name,
-            version: module.module.pkg.version,
-            ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
-            replacement,
-        };
-        if (replacement?.type == 'native') nativeReplacements.add(m.name);
-        if (replacement?.type == 'micro') microReplacements.add(m.name);
+        if (!m) {
+            const shouldWalk = !parentNodes.has(module.module.pkg.name);
 
-        if (shouldWalk) {
-            parentNodes.add(m.name);
-            for (const dep of module.dependencies) {
-                _walk(graph.get(dep.key), m);
+            const replacement = checkForReplacements(module.module.pkg.name);
+            m = {
+                name: module.module.pkg.name,
+                version: module.module.pkg.version,
+                ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
+                replacement,
+            };
+            if (replacement?.type == 'native') nativeReplacements.add(m.name);
+            if (replacement?.type == 'micro') microReplacements.add(m.name);
+
+            if (shouldWalk) {
+                parentNodes.add(m.name);
+                for (const dep of module.dependencies) {
+                    _walk(graph.get(dep.key), m);
+                }
+                parentNodes.delete(m.name);
             }
-            parentNodes.delete(m.name);
+
+            moduleCache.set(module.module.key, m);
         }
 
         parent ? parent.dependencies.push(m) : (moduleTree = m);

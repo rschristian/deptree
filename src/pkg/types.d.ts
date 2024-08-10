@@ -36,6 +36,8 @@ export interface PackageMetaData {
     error?: string;
 }
 
+export type ModuleTreeCache = Map<string, ModuleTree>;
+
 export interface ModuleTree {
     name: string;
     version: string;
