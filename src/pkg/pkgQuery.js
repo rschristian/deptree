@@ -1,7 +1,7 @@
 import nativeReplacements from 'module-replacements/manifests/native.json';
 import microUtilsReplacements from 'module-replacements/manifests/micro-utilities.json';
 
-import { getModule } from './registry.js';
+import { getModuleData } from './registry.js';
 
 // TODO: Can probably patch the module instead of sorting per-request
 const NATIVE = nativeReplacements.moduleReplacements.sort((a, b) =>
@@ -91,9 +91,8 @@ async function walkModuleGraph(query) {
 
     /**
      * @param {Module} module
-     * @param {number} [level=0]
      */
-    const _walk = async (module, level = 0) => {
+    const _walk = async (module) => {
         if (!module) return Promise.reject(new Error('Module not found'));
 
         if (graph.has(module.key)) return;
@@ -106,24 +105,21 @@ async function walkModuleGraph(query) {
         /** @type {ModuleInfo} */
         const info = {
             module,
-            level,
             dependencies: [],
         };
         graph.set(module.key, info);
 
-        const resolvedDeps = await Promise.all(
+        info.dependencies = await Promise.all(
             deps.map(async (dep) => {
-                const module = await getModule(dep.name, dep.version);
-                await _walk(module, level + 1);
+                const module = await getModuleData(dep.name, dep.version);
+                await _walk(module);
 
                 return module;
             }),
         );
-
-        info.dependencies = resolvedDeps;
     };
 
-    const module = await getModule(query);
+    const module = await getModuleData(query);
     await _walk(module);
     return [module, graph];
 }
@@ -189,7 +185,7 @@ function formTreeFromGraph(entryModule, graph) {
 
     /**
      * @param {ModuleInfo} module
-     * @param {{ dependencies: unknown[] }} [parent]
+     * @param {ModuleTree} [parent]
      */
     const _walk = (module, parent) => {
         const shouldWalk = !parentNodes.has(module.module.pkg.name);

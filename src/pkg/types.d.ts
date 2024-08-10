@@ -6,7 +6,6 @@ export interface Module {
 
 export interface ModuleInfo {
     module: Module;
-    level: number;
     dependencies: Module[];
 }
 
