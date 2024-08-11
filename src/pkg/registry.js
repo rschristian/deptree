@@ -104,7 +104,7 @@ export async function getModuleData(name, version) {
             if (!res.ok) throw res;
 
             /** @type {PackageMetaData} */
-            const pkgMeta = await (await fetch(`${NPM_REGISTRY}/${name}`)).json();
+            const pkgMeta = await res.json();
 
             if (pkgMeta?.error) throw new Error(pkgMeta.error);
 
