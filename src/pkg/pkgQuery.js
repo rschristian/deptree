@@ -43,19 +43,14 @@ export async function getPackageData(pkgQuery) {
                         'Invalid package query, see: https://docs.npmjs.com/cli/v10/configuring-npm/package-json#name',
                     );
 
-                const [entryModule, graph] = await walkModuleGraph(query);
-                const {
-                    moduleTree,
-                    nativeReplacements: nReplacements,
-                    microReplacements: mReplacements,
-                } = formTreeFromGraph(graph.get(entryModule.key), graph);
+                const { moduleTree, moduleCache, replacements } = await walkModuleGraph(query);
 
                 moduleTrees.push(moduleTree);
                 stats.nodeCount += moduleTree.nodeCount;
 
-                uniqueModules = new Set([...uniqueModules, ...graph.keys()]);
-                nativeReplacements = new Set([...nativeReplacements, ...nReplacements]);
-                microReplacements = new Set([...microReplacements, ...mReplacements]);
+                uniqueModules = new Set([...uniqueModules, ...moduleCache.keys()]);
+                nativeReplacements = new Set([...nativeReplacements, ...replacements.native]);
+                microReplacements = new Set([...microReplacements, ...replacements.micro]);
             } catch (e) {
                 errorResponse(e.message);
             }
@@ -83,45 +78,74 @@ export async function getPackageData(pkgQuery) {
 
 /**
  * @param {string} query
- * @returns {Promise<[Module, Graph]>}
+ * @returns {Promise<{
+     * moduleTree: ModuleTree,
+     * moduleCache: ModuleTreeCache,
+     * replacements: {
+         * native: Set<string>,
+         * micro: Set<string>
+     * }
+ * }>}
  */
 async function walkModuleGraph(query) {
-    /** @type {Graph} */
-    const graph = new Map();
+    /** @type {ModuleTreeCache} */
+    const moduleCache = new Map();
+
+    const replacements = {
+        native: new Set(),
+        micro: new Set(),
+    }
+
+    // Used to prevent circular deps
+    const parentNodes = new Set();
 
     /**
      * @param {Module} module
+     * @returns {Promise<ModuleTree>}
      */
     const _walk = async (module) => {
         if (!module) return Promise.reject(new Error('Module not found'));
-
-        if (graph.has(module.key)) return;
 
         let deps = [];
         for (const [name, version] of Object.entries(module.pkg.dependencies || {})) {
             deps.push({ name, version });
         }
 
-        /** @type {ModuleInfo} */
+        const shouldWalk = !parentNodes.has(module.pkg.name);
+
+        const replacement = checkForReplacements(module.pkg.name);
         const info = {
-            module,
-            dependencies: [],
+            name: module.pkg.name,
+            version: module.pkg.version,
+            nodeCount: 1,
+            ...(shouldWalk && deps.length && { dependencies: [] }),
+            replacement,
         };
-        graph.set(module.key, info);
+        if (replacement?.type == 'native') replacements.native.add(info.name);
+        if (replacement?.type == 'micro') replacements.micro.add(info.name);
 
-        info.dependencies = await Promise.all(
-            deps.map(async (dep) => {
+        if (shouldWalk) {
+            parentNodes.add(info.name);
+            // `Promise.all(deps.map(...))` would be a bit faster but results in an
+            // unstable dependency order -- refresh the page and things will shift.
+            //
+            // For now, I find that undesirable, but it's an option for the future.
+            for (const dep of deps) {
                 const module = await getModuleData(dep.name, dep.version);
-                await _walk(module);
+                const moduleTree = await _walk(module);
+                info.nodeCount += moduleTree.nodeCount;
+                info.dependencies.push(moduleTree);
+            }
+            parentNodes.delete(info.name);
+        }
+        moduleCache.set(module.key, info);
 
-                return module;
-            }),
-        );
+        return info;
     };
 
     const module = await getModuleData(query);
-    await _walk(module);
-    return [module, graph];
+    const moduleTree = await _walk(module);
+    return { moduleTree, moduleCache, replacements };
 }
 
 /**
@@ -163,64 +187,4 @@ function checkForReplacements(module) {
         }
     }
     return null;
-}
-
-/**
- * @param {ModuleInfo} entryModule
- * @param {Graph} graph
- * @returns {{
-     * moduleTree: ModuleTree,
-     * nativeReplacements: Set<string>,
-     * microReplacements: Set<string>
- * }}
- */
-function formTreeFromGraph(entryModule, graph) {
-    let moduleTree = /** @type {ModuleTree} */ ({});
-    const parentNodes = new Set();
-
-    const nativeReplacements = new Set();
-    const microReplacements = new Set();
-
-    /** @type {ModuleTreeCache} */
-    const moduleCache = new Map();
-
-    /**
-     * @param {ModuleInfo} module
-     * @returns {ModuleTree}
-     */
-    const _walk = (module) => {
-        let m = moduleCache.get(module.module.key);
-
-        if (!m) {
-            const shouldWalk = !parentNodes.has(module.module.pkg.name);
-
-            const replacement = checkForReplacements(module.module.pkg.name);
-            m = {
-                name: module.module.pkg.name,
-                version: module.module.pkg.version,
-                nodeCount: 1,
-                ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
-                replacement,
-            };
-            if (replacement?.type == 'native') nativeReplacements.add(m.name);
-            if (replacement?.type == 'micro') microReplacements.add(m.name);
-
-            if (shouldWalk) {
-                parentNodes.add(m.name);
-                for (const dep of module.dependencies) {
-                    const moduleTree = _walk(graph.get(dep.key));
-                    m.nodeCount += moduleTree.nodeCount;
-                    m.dependencies.push(moduleTree);
-                }
-                parentNodes.delete(m.name);
-            }
-
-            moduleCache.set(module.module.key, m);
-        }
-
-        return m;
-    };
-
-    if (entryModule) moduleTree = _walk(entryModule);
-    return { moduleTree, nativeReplacements, microReplacements };
 }
