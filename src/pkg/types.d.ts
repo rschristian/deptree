@@ -41,6 +41,7 @@ export type ModuleTreeCache = Map<string, ModuleTree>;
 export interface ModuleTree {
     name: string;
     version: string;
+    nodeCount: number;
     dependencies?: ModuleTree[];
     replacement?: {
         type: 'native' | 'micro';

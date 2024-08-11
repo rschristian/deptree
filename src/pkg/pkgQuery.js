@@ -46,13 +46,12 @@ export async function getPackageData(pkgQuery) {
                 const [entryModule, graph] = await walkModuleGraph(query);
                 const {
                     moduleTree,
-                    nodeCount,
                     nativeReplacements: nReplacements,
                     microReplacements: mReplacements,
                 } = formTreeFromGraph(graph.get(entryModule.key), graph);
 
                 moduleTrees.push(moduleTree);
-                stats.nodeCount += nodeCount;
+                stats.nodeCount += moduleTree.nodeCount;
 
                 uniqueModules = new Set([...uniqueModules, ...graph.keys()]);
                 nativeReplacements = new Set([...nativeReplacements, ...nReplacements]);
@@ -171,7 +170,6 @@ function checkForReplacements(module) {
  * @param {Graph} graph
  * @returns {{
      * moduleTree: ModuleTree,
-     * nodeCount: number,
      * nativeReplacements: Set<string>,
      * microReplacements: Set<string>
  * }}
@@ -182,17 +180,15 @@ function formTreeFromGraph(entryModule, graph) {
 
     const nativeReplacements = new Set();
     const microReplacements = new Set();
-    let nodeCount = 0;
-
 
     /** @type {ModuleTreeCache} */
     const moduleCache = new Map();
 
     /**
      * @param {ModuleInfo} module
-     * @param {ModuleTree} [parent]
+     * @returns {ModuleTree}
      */
-    const _walk = (module, parent) => {
+    const _walk = (module) => {
         let m = moduleCache.get(module.module.key);
 
         if (!m) {
@@ -202,6 +198,7 @@ function formTreeFromGraph(entryModule, graph) {
             m = {
                 name: module.module.pkg.name,
                 version: module.module.pkg.version,
+                nodeCount: 1,
                 ...(shouldWalk && module.dependencies.length && { dependencies: [] }),
                 replacement,
             };
@@ -211,7 +208,9 @@ function formTreeFromGraph(entryModule, graph) {
             if (shouldWalk) {
                 parentNodes.add(m.name);
                 for (const dep of module.dependencies) {
-                    _walk(graph.get(dep.key), m);
+                    const moduleTree = _walk(graph.get(dep.key));
+                    m.nodeCount += moduleTree.nodeCount;
+                    m.dependencies.push(moduleTree);
                 }
                 parentNodes.delete(m.name);
             }
@@ -219,10 +218,9 @@ function formTreeFromGraph(entryModule, graph) {
             moduleCache.set(module.module.key, m);
         }
 
-        parent ? parent.dependencies.push(m) : (moduleTree = m);
-        nodeCount++;
+        return m;
     };
 
-    if (entryModule) _walk(entryModule);
-    return { moduleTree, nodeCount, nativeReplacements, microReplacements };
+    if (entryModule) moduleTree = _walk(entryModule);
+    return { moduleTree, nativeReplacements, microReplacements };
 }
