@@ -35,7 +35,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '  ' }) {
                 <button
                     class={[
                         'flex justify-center items-center w-6 h-6',
-                        'bg-highlight(& dark:dark) drop-shadow-lg rounded hocus:(opacity-80 outline(1 & primary))',
+                        'bg-highlight(& dark:dark) rounded hocus:(opacity-80 outline(1 & primary))',
                         'mr-1 text-xs leading-none',
                         pkg.dependencies?.length ? '' : 'invisible',
                     ]}
