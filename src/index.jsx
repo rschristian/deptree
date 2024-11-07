@@ -45,8 +45,8 @@ export function App() {
                 />
                 <Header.ThemeToggle />
             </Header>
-            <Main widthStyle="flex justify-center w-full lg:max-w-screen-lg">
-                <div class="h-fit w(full md:10/12) 2xl:mt-[5vh] p(4 md:8) text-center bg-card(& dark:dark) rounded-xl">
+            <Main widthStyle="flex flex-col gap-4 w-full">
+                <div class="w-full max-w-4xl mx-auto p(4 md:8) text-center bg-card(& dark:dark) rounded-xl">
                     <h1 class="text-4xl font-bold">DepTree</h1>
                     <p class="p-2">
                         Visualize the dependency tree of a package or project to see where you might
@@ -57,8 +57,10 @@ export function App() {
                         Do be warned with package.json upload, this can result in a massive number
                         of network requests and DOM nodes
                     </p>
-                    {inProgress && <span class="loader mt-8 p-4"></span>}
-                    {queryResult && <DataBox queryResult={queryResult} />}
+                </div>
+                <div class="w-full max-w-full mx-auto p(4 md:8) text-center bg-card(& dark:dark) rounded-xl">
+                    {inProgress && <span class="loader p-4"></span>}
+                    {!inProgress && queryResult && <DataBox queryResult={queryResult} />}
                 </div>
             </Main>
             <Footer year={2024} />
