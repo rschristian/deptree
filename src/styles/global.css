@@ -77,3 +77,10 @@ svg {
 #file-upload + label:hover {
   outline: 2px solid #FFC799;
 }
+
+.collapse-tree ~ div,
+.collapse-tree-all pre ~ div:not(:has(.decoration-2)),
+.collapse-tree-native pre ~ div:not(:has(.decoration-replacement-native)),
+.collapse-tree-micro pre ~ div:not(:has(.decoration-replacement-micro)) {
+  display: none;
+}
