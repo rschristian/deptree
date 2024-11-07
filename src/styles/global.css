@@ -2,7 +2,7 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  accent-color: #FFC799;
+  accent-color: #ffc799;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -75,7 +75,7 @@ svg {
 
 #file-upload:focus + label,
 #file-upload + label:hover {
-  outline: 2px solid #FFC799;
+  outline: 2px solid #ffc799;
 }
 
 .collapse-tree ~ div,
