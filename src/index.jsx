@@ -53,7 +53,7 @@ export function App() {
                         want to optimize
                     </p>
                     <PackageForm setQueryResult={setQueryResult} fetchPkgTree={fetchPkgTree} />
-                    <p class="text-xs">
+                    <p class="text-xs [text-wrap-style:balance]">
                         Do be warned with package.json upload, this can result in a massive number
                         of network requests and DOM nodes
                     </p>
