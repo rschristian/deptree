@@ -55,9 +55,11 @@ export async function getPackageData(pkgQuery) {
                 errorResponse(e.message);
             }
         }
-    };
+    }
 
-    await Promise.all(Array(5).fill(pkgQueries.entries()).map(buildModuleTree));
+    await Promise.all(
+        Array(5).fill(pkgQueries.entries()).map(buildModuleTree)
+    );
     moduleTrees.sort((a, b) => a.name.localeCompare(b.name));
 
     stats.moduleCount = uniqueModules.size;
@@ -77,12 +79,12 @@ export async function getPackageData(pkgQuery) {
 /**
  * @param {string} query
  * @returns {Promise<{
- * moduleTree: ModuleTree,
- * moduleCache: ModuleTreeCache,
- * replacements: {
- * native: Set<string>,
- * micro: Set<string>
- * }
+     * moduleTree: ModuleTree,
+     * moduleCache: ModuleTreeCache,
+     * replacements: {
+         * native: Set<string>,
+         * micro: Set<string>
+     * }
  * }>}
  */
 async function walkModuleGraph(query) {
@@ -92,7 +94,7 @@ async function walkModuleGraph(query) {
     const replacements = {
         native: new Set(),
         micro: new Set(),
-    };
+    }
 
     // Used to prevent circular deps
     const parentNodes = new Set();

@@ -44,55 +44,21 @@ export function DataBox({ queryResult }) {
             {!queryResult.error && (
                 <div class="z-10 sticky top-8 bg-card(& dark:dark) max-w-4xl mx-auto px-2 py-0 md:px-6 md:py-4 border(& resultBorder 1) rounded">
                     <div class="grid gap-y-1 gap-x-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-end [&>*]:p-1 [&>*]:text-left [&>*]:leading-none">
-                        <div
-                            class={[
-                                'grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded',
-                                isNativeActive || isMicroActive ? 'opacity-50' : 'opacity-100',
-                            ]}
-                        >
+                        <div class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded', (isNativeActive || isMicroActive) ? 'opacity-50' : 'opacity-100']}>
                             <p class="">Total Nodes</p>
-                            <p class="text-xl md:text-4xl font-semibold">
-                                {queryResult.stats.nodeCount}
-                            </p>
+                            <p class="text-xl md:text-4xl font-semibold">{queryResult.stats.nodeCount}</p>
                         </div>
-                        <div
-                            class={[
-                                'grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded',
-                                isNativeActive || isMicroActive ? 'opacity-50' : 'opacity-100',
-                            ]}
-                        >
+                        <div class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded', (isNativeActive || isMicroActive) ? 'opacity-50' : 'opacity-100']}>
                             <p class="">Total Modules</p>
-                            <p class="text-xl md:text-4xl font-semibold">
-                                {queryResult.stats.moduleCount}
-                            </p>
+                            <p class="text-xl md:text-4xl font-semibold">{queryResult.stats.moduleCount}</p>
                         </div>
-                        <button
-                            class={[
-                                'grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded hocus:(opacity-80 outline(2 & primary))',
-                                isNativeActive || !(isNativeActive || isMicroActive)
-                                    ? 'opacity-100'
-                                    : 'opacity-50',
-                            ]}
-                            onClick={() => setIsNativeActive(!isNativeActive)}
-                        >
+                        <button class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded hocus:(opacity-80 outline(2 & primary))', (isNativeActive || !(isNativeActive || isMicroActive)) ? 'opacity-100' : 'opacity-50']} onClick={() => setIsNativeActive(!isNativeActive)}>
                             <p class="">Native Replacement</p>
-                            <p class="text-xl md:text-4xl font-semibold text-replacement-native(& dark:dark)">
-                                {queryResult.stats.nativeCount}
-                            </p>
+                            <p class="text-xl md:text-4xl font-semibold text-replacement-native(& dark:dark)">{queryResult.stats.nativeCount}</p>
                         </button>
-                        <button
-                            class={[
-                                'grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded hocus:(opacity-80 outline(2 & primary))',
-                                isMicroActive || !(isNativeActive || isMicroActive)
-                                    ? 'opacity-100'
-                                    : 'opacity-50',
-                            ]}
-                            onClick={() => setIsMicroActive(!isMicroActive)}
-                        >
+                        <button class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded hocus:(opacity-80 outline(2 & primary))', (isMicroActive || !(isNativeActive || isMicroActive)) ? 'opacity-100' : 'opacity-50']} onClick={() => setIsMicroActive(!isMicroActive)}>
                             <p class="">Micro Utilities</p>
-                            <p class="text-xl md:text-4xl font-semibold text-replacement-micro(& dark:dark)">
-                                {queryResult.stats.microCount}
-                            </p>
+                            <p class="text-xl md:text-4xl font-semibold text-replacement-micro(& dark:dark)">{queryResult.stats.microCount}</p>
                         </button>
                     </div>
                 </div>
@@ -114,13 +80,9 @@ export function DataBox({ queryResult }) {
                         ref={container}
                         class={[
                             'overflow-x-auto p-0.5',
-                            isNativeActive && isMicroActive
-                                ? 'collapse-tree-all'
-                                : isNativeActive
-                                ? 'collapse-tree-native'
-                                : isMicroActive
-                                ? 'collapse-tree-micro'
-                                : '',
+                            (isNativeActive && isMicroActive) ? 'collapse-tree-all'
+                                : isNativeActive ? 'collapse-tree-native'
+                                : isMicroActive ? 'collapse-tree-micro' : '',
                         ]}
                         {...(!queryResult.error && {
                             onMouseMove: move,
@@ -129,11 +91,10 @@ export function DataBox({ queryResult }) {
                             onMouseLeave: stopDragging,
                         })}
                     >
-                        {queryResult.error ? (
-                            <p class="whitespace-pre">{queryResult.error}</p>
-                        ) : (
-                            queryResult.moduleTrees.map((pkg) => <PackageTree pkg={pkg} />)
-                        )}
+                        {queryResult.error
+                            ? <p class="whitespace-pre">{queryResult.error}</p>
+                            : queryResult.moduleTrees.map((pkg) => <PackageTree pkg={pkg} />)
+                        }
                     </div>
                 </Hint>
             </section>

@@ -27,13 +27,11 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '  ' }) {
 
     return (
         <div class={[depth == 0 ? 'mb-4 last:mb-2' : '', 'grid _gap-0.5 text-sm']}>
-            <pre
-                class={[
-                    'flex items-center w-full',
-                    !isVisible ? 'collapse-tree' : '',
-                    'p-px hover:bg-highlightContent/20 dark:hover:bg-highlightContent-dark/20) rounded',
-                ]}
-            >
+            <pre class={[
+                'flex items-center w-full',
+                !isVisible ? 'collapse-tree' : '',
+                'p-px hover:bg-highlightContent/20 dark:hover:bg-highlightContent-dark/20) rounded',
+            ]}>
                 <button
                     class={[
                         'flex justify-center items-center w-6 h-6',
