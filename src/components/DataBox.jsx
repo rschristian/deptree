@@ -39,26 +39,34 @@ export function DataBox({ queryResult }) {
     const [isNativeActive, setIsNativeActive] = useState(false);
     const [isMicroActive, setIsMicroActive] = useState(false);
 
+    const className = {
+        container: 'grid gap-y-1 gap-x-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-end',
+        wrapper: 'grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded p-1 text-left leading-none',
+        button: 'hocus:(opacity-80 outline(2 & primary))',
+        term: '',
+        description: 'text-xl md:text-4xl font-semibold',
+    };
+
     return (
         <>
             {!queryResult.error && (
                 <div class="z-10 sticky top-8 bg-card(& dark:dark) max-w-4xl mx-auto px-2 py-0 md:px-6 md:py-4 border(& resultBorder 1) rounded">
-                    <div class="grid gap-y-1 gap-x-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 items-end [&>*]:p-1 [&>*]:text-left [&>*]:leading-none">
-                        <div class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded', (isNativeActive || isMicroActive) ? 'opacity-50' : 'opacity-100']}>
-                            <p class="">Total Nodes</p>
-                            <p class="text-xl md:text-4xl font-semibold">{queryResult.stats.nodeCount}</p>
+                    <div class={`${className.container}`}>
+                        <div class={`${className.wrapper} ${(isNativeActive || isMicroActive) ? 'opacity-50' : 'opacity-100'}`}>
+                            <p class={`${className.term}`}>Total Nodes</p>
+                            <p class={`${className.description}`}>{queryResult.stats.nodeCount}</p>
                         </div>
-                        <div class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded', (isNativeActive || isMicroActive) ? 'opacity-50' : 'opacity-100']}>
-                            <p class="">Total Modules</p>
-                            <p class="text-xl md:text-4xl font-semibold">{queryResult.stats.moduleCount}</p>
+                        <div class={`${className.wrapper} ${(isNativeActive || isMicroActive) ? 'opacity-50' : 'opacity-100'}`}>
+                            <p class={`${className.term}`}>Total Modules</p>
+                            <p class={`${className.description}`}>{queryResult.stats.moduleCount}</p>
                         </div>
-                        <button class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded hocus:(opacity-80 outline(2 & primary))', (isNativeActive || !(isNativeActive || isMicroActive)) ? 'opacity-100' : 'opacity-50']} onClick={() => setIsNativeActive(!isNativeActive)}>
-                            <p class="">Native Replacement</p>
-                            <p class="text-xl md:text-4xl font-semibold text-replacement-native(& dark:dark)">{queryResult.stats.nativeCount}</p>
+                        <button class={`${className.wrapper} ${className.button} ${(isNativeActive || !(isNativeActive || isMicroActive)) ? 'opacity-100' : 'opacity-50'}`} onClick={() => setIsNativeActive(!isNativeActive)}>
+                            <p class={`${className.term}`}>Native Replacement</p>
+                            <p class={`${className.description} text-replacement-native(& dark:dark)`}>{queryResult.stats.nativeCount}</p>
                         </button>
-                        <button class={['grid grid-cols-[1fr_auto] md:grid-cols-1 gap-1 items-baseline rounded hocus:(opacity-80 outline(2 & primary))', (isMicroActive || !(isNativeActive || isMicroActive)) ? 'opacity-100' : 'opacity-50']} onClick={() => setIsMicroActive(!isMicroActive)}>
-                            <p class="">Micro Utilities</p>
-                            <p class="text-xl md:text-4xl font-semibold text-replacement-micro(& dark:dark)">{queryResult.stats.microCount}</p>
+                        <button class={`${className.wrapper} ${className.button} ${(isMicroActive || !(isNativeActive || isMicroActive)) ? 'opacity-100' : 'opacity-50'}`} onClick={() => setIsMicroActive(!isMicroActive)}>
+                            <p class={`${className.term}`}>Micro Utilities</p>
+                            <p class={`${className.description} text-replacement-micro(& dark:dark)`}>{queryResult.stats.microCount}</p>
                         </button>
                     </div>
                 </div>
