@@ -47,6 +47,12 @@ export function DataBox({ queryResult }) {
         description: 'text-xl md:text-4xl font-semibold',
     };
 
+    const memoizedTreeClass = useMemo(() => {
+        return isNativeActive && isMicroActive ? 'collapse-tree-all'
+            : isNativeActive ? 'collapse-tree-native'
+            : isMicroActive ? 'collapse-tree-micro' : '';
+    }, [isNativeActive, isMicroActive]);
+
     return (
         <>
             {!queryResult.error && (
@@ -86,12 +92,7 @@ export function DataBox({ queryResult }) {
                 >
                     <div
                         ref={container}
-                        class={[
-                            'overflow-x-auto p-0.5',
-                            (isNativeActive && isMicroActive) ? 'collapse-tree-all'
-                                : isNativeActive ? 'collapse-tree-native'
-                                : isMicroActive ? 'collapse-tree-micro' : '',
-                        ]}
+                        class={`overflow-x-auto p-0.5 ${memoizedTreeClass}`}
                         {...(!queryResult.error && {
                             onMouseMove: move,
                             onMouseDown: startDragging,
