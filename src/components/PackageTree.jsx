@@ -21,10 +21,6 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '  ' }) {
         ? `underline(& offset-4) decoration(2 replacement-${pkg.replacement.type}(& dark:dark))`
         : '';
 
-    function handleTreeVisibility() {
-        setIsVisible(!isVisible);
-    }
-
     return (
         <div class={[depth == 0 ? 'mb-4 last:mb-2' : '', 'grid _gap-0.5 text-sm']}>
             <pre class={[
@@ -39,7 +35,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '  ' }) {
                         'mr-1 text-xs leading-none',
                         pkg.dependencies?.length ? '' : 'invisible',
                     ]}
-                    onClick={handleTreeVisibility}
+                    onClick={() => setIsVisible(!isVisible)}
                 >
                     {isVisible ? '-' : '+'}
                 </button>
