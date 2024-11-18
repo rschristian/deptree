@@ -77,3 +77,7 @@ svg {
 #file-upload + label:hover {
   outline: 2px solid #FFC799;
 }
+
+.collapse-tree ~ div {
+  content-visibility: hidden;
+}
