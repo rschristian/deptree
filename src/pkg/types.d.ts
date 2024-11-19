@@ -46,5 +46,5 @@ export interface ModuleTree {
     replacement?: {
         type: 'native' | 'micro';
         replacementString: string;
-    }
+    };
 }

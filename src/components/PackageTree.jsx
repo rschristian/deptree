@@ -29,17 +29,21 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
     const toggleCollapse = () => {
         if (ref.current) {
             ref.current.classList.toggle('collapse-tree');
-            ref.current.firstChild.textContent = ref.current.firstChild.textContent === '+' ? '-' : '+';
+            ref.current.firstChild.textContent =
+                ref.current.firstChild.textContent === '+' ? '-' : '+';
             ref.current.firstChild.classList.toggle('text-primary');
         }
     };
 
     return (
-        <div class={(depth == 0 && 'mb-4 last:mb-2')}>
+        <div class={depth == 0 && 'mb-4 last:mb-2'}>
             <pre class="w-full text-left" ref={ref}>
                 <button
-                    class={`inline-flex items-center justify-center h-5 w-5 mr-2 bg-highlight(& dark:dark) font-bold hocus:(outline(1 & primary)) rounded ${hasChildren ? '' : 'invisible'}`}
-                    onClick={toggleCollapse}>
+                    class={`inline-flex items-center justify-center h-5 w-5 mr-2 bg-highlight(& dark:dark) font-bold hocus:(outline(1 & primary)) rounded ${
+                        hasChildren ? '' : 'invisible'
+                    }`}
+                    onClick={toggleCollapse}
+                >
                     -
                 </button>
                 {lineSymbol}

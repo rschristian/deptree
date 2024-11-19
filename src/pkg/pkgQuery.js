@@ -55,7 +55,7 @@ export async function getPackageData(pkgQuery) {
                 errorResponse(e.message);
             }
         }
-    }
+    };
 
     await Promise.all(
         Array(5).fill(pkgQueries.entries()).map(buildModuleTree)
@@ -94,7 +94,7 @@ async function walkModuleGraph(query) {
     const replacements = {
         native: new Set(),
         micro: new Set(),
-    }
+    };
 
     // Used to prevent circular deps
     const parentNodes = new Set();

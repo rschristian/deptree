@@ -28,7 +28,9 @@ export function PackageForm({ setQueryResult, fetchPkgTree }) {
 
     useEffect(() => {
         if (formRef.current) {
-            const defaultValue = (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('q')) || '';
+            const defaultValue =
+                (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('q')) ||
+                '';
             formRef.current[0].defaultValue = defaultValue;
         }
     }, []);
@@ -50,7 +52,9 @@ export function PackageForm({ setQueryResult, fetchPkgTree }) {
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        const pkgQuery = /** @type {string} */ (new FormData(formRef.current).get('pkgQuery')).trim();
+        const pkgQuery = /** @type {string} */ (
+            new FormData(formRef.current).get('pkgQuery')
+        ).trim();
         if (pkgQuery) fetchPkgTree(pkgQuery);
     };
 
