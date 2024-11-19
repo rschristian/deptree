@@ -38,7 +38,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
         <div class={(depth == 0 && 'mb-4 last:mb-2')}>
             <pre class="w-full text-left" ref={ref}>
                 <button
-                    class={`h-5 w-5 mr-2 bg-highlight(& dark:dark) font-bold hocus:(outline(1 & primary)) rounded ${hasChildren ? '' : 'invisible'}`}
+                    class={`inline-flex items-center justify-center h-5 w-5 mr-2 bg-highlight(& dark:dark) font-bold hocus:(outline(1 & primary)) rounded ${hasChildren ? '' : 'invisible'}`}
                     onClick={toggleCollapse}>
                     -
                 </button>
