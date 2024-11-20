@@ -11,6 +11,28 @@ export interface ModuleInfo {
 
 type Graph = Map<string, ModuleInfo>;
 
+export type ModuleTreeCache = Map<string, ModuleTree>;
+
+export interface ModuleTree {
+    name: string;
+    version: string;
+    nodeCount: number;
+    dependencies?: ModuleTree[];
+    replacement?: {
+        type: 'native' | 'micro';
+        replacementString: string;
+    };
+}
+
+export interface ModuleGraph {
+    moduleTree: ModuleTree;
+    moduleCache: ModuleTreeCache;
+    replacements: {
+        native: Set<string>;
+        micro: Set<string>;
+    };
+}
+
 // registry
 export interface PackageData {
     name: string;
@@ -36,15 +58,4 @@ export interface PackageMetaData {
     error?: string;
 }
 
-export type ModuleTreeCache = Map<string, ModuleTree>;
 
-export interface ModuleTree {
-    name: string;
-    version: string;
-    nodeCount: number;
-    dependencies?: ModuleTree[];
-    replacement?: {
-        type: 'native' | 'micro';
-        replacementString: string;
-    };
-}
