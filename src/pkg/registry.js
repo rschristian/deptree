@@ -100,7 +100,13 @@ export async function getModuleData(name, version) {
         /** @type {PackageData} */
         let pkg;
         try {
-            const res = await fetch(`${NPM_REGISTRY}/${name}`);
+            const res = await fetch(`${NPM_REGISTRY}/${name}`, {
+                // Returns abbreviated version, with a few less fields:
+                // https://github.com/npm/registry/blob/master/docs/responses/package-metadata.md
+                headers: {
+                    Accept: 'application/vnd.npm.install-v1+json',
+                },
+            });
             if (!res.ok) throw res;
 
             /** @type {PackageMetaData} */
