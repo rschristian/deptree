@@ -38,32 +38,30 @@ export function DataBox({ queryResult }) {
 
     return (
         <>
+            <Key />
             <section
-                class={`relative mt-8 p-4 border(& ${
+                class={`relative p-4 border(& ${
                     queryResult.error ? 'red' : 'resultBorder'
                 } 1) rounded`}
             >
                 {!queryResult.error && (
-                    <>
-                        <Hint
-                            template={() => (
-                                <div class="text-left">
-                                    Module Count: {queryResult.stats.moduleCount}
-                                    <br />
-                                    Modules with Native Replacement: {queryResult.stats.nativeCount}
-                                    <br />
-                                    Micro Utility Modules: {queryResult.stats.microCount}
-                                    <br />
-                                    Total Number of Nodes: {queryResult.stats.nodeCount}
-                                </div>
-                            )}
-                        >
-                            <svg tabindex={0} data-hint=" " class="absolute right-0 z-50">
-                                <use href="/assets/icons.svg#info" />
-                            </svg>
-                        </Hint>
-                        <Key />
-                    </>
+                    <Hint
+                        template={() => (
+                            <div class="text-left">
+                                Module Count: {queryResult.stats.moduleCount}
+                                <br />
+                                Modules with Native Replacement: {queryResult.stats.nativeCount}
+                                <br />
+                                Micro Utility Modules: {queryResult.stats.microCount}
+                                <br />
+                                Total Number of Nodes: {queryResult.stats.nodeCount}
+                            </div>
+                        )}
+                    >
+                        <svg tabindex={0} data-hint=" " class="absolute right-0 z-50">
+                            <use href="/assets/icons.svg#info" />
+                        </svg>
+                    </Hint>
                 )}
                 <Hint
                     template={(content) => (
@@ -107,7 +105,7 @@ export function DataBox({ queryResult }) {
 
 function Key() {
     return (
-        <div class="fixed w-10/12 md:w-auto left-2/4 -translate-x-2/4 bottom-12 py-1 px-2 bg-card(& dark:dark) border(& resultBorder 1) rounded z-50">
+        <div class="w-fit my-4 mx-auto py-1 px-2 bg-card(& dark:dark) border(& resultBorder 1) rounded z-50">
             <div class="flex(& col md:row) items-start">
                 Key:
                 <div class="flex items-center ml-4">
