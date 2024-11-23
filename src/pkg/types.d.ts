@@ -57,5 +57,3 @@ export interface PackageMetaData {
     versions: Record<string, PackageData>;
     error?: string;
 }
-
-
