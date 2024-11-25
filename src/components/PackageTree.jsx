@@ -20,7 +20,7 @@ export function PackageTree({ pkg, depth = 0, isLast = false, prefix = '' }) {
     }
 
     const decoration = pkg.replacement
-        ? `underline(& offset-4) decoration(2 replacement-${pkg.replacement.type}(& dark:dark))`
+        ? `underline(& offset-4) decoration(2 replacement-${pkg.replacement.type})`
         : '';
 
     const hasChildren = pkg.dependencies?.length > 0;

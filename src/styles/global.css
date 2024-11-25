@@ -10,10 +10,14 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
+  --replacement-native: #c21c0a;
+  --replacement-micro: #e5a50a;
   --hint-text: #333;
   --hint-background: #f5f5f5;
 
   @media (prefers-color-scheme: dark) {
+    --replacement-native: #f66151;
+    --replacement-micro: #f9f06b;
     --hint-text: #eee;
     --hint-background: #282828;
   }

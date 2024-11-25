@@ -104,19 +104,39 @@ export function DataBox({ queryResult }) {
 }
 
 function Key() {
+    const toggleHighlight = (e) => {
+        const highlightType = e.currentTarget.dataset.type;
+        const c = getComputedStyle(document.documentElement).getPropertyValue(`--replacement-${highlightType}`);
+        // Toggle transparency to hide it
+        document.documentElement.style.setProperty(
+            `--replacement-${highlightType}`,
+            c.endsWith('00') ? c.substring(0, c.length - 2) : c + '00',
+        );
+    };
+
     return (
         <div class="w-fit my-4 mx-auto py-1 px-2 bg-card(& dark:dark) border(& resultBorder 1) rounded z-50">
-            <div class="flex(& col md:row) items-start">
-                Key:
-                <div class="flex items-center ml-4">
-                    <span class="inline-block w-4 h-4 mr-2 bg-replacement-native(& dark:dark)"></span>
-                    - Has native replacement
-                </div>
-                <div class="flex items-center ml-4">
-                    <span class="inline-block w-4 h-4 mr-2 bg-replacement-micro(& dark:dark)"></span>
-                    - Is micro utility
-                </div>
+            <div class="flex(& col md:row) items(start md:center)">
+                Highlight:
+                {['native', 'micro'].map((type) => (
+                    <HighlightOption type={type} toggleHighlight={toggleHighlight} />
+                ))}
             </div>
         </div>
+    );
+}
+
+/**
+ * @param {{ type: string, toggleHighlight: (e: Event) => void }} props
+ */
+function HighlightOption({ type, toggleHighlight }) {
+    return (
+        <button
+            onClick={toggleHighlight}
+            class="flex items-center ml-4 py-1 px-2 bg-highlight(& dark:dark) drop-shadow-lg rounded-lg hocus:(outline(1 & primary))"
+            data-type={type}
+        >
+            <span class={`inline-block w-4 h-4 mr-2 bg-replacement-${type}`}></span>- {type == 'native' ? 'Has native replacement' : 'Is micro utility'}
+        </button>
     );
 }

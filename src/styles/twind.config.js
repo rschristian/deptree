@@ -36,14 +36,8 @@ export const twindConfig = defineConfig({
                 dark: '#282828',
             },
             replacement: {
-                native: {
-                    DEFAULT: '#C21C0A',
-                    dark: '#F66151',
-                },
-                micro: {
-                    DEFAULT: '#E5A50A',
-                    dark: '#F9F06B',
-                },
+                native: 'var(--replacement-native)',
+                micro: 'var(--replacement-micro)',
             },
             white: {
                 muted: '#999',
