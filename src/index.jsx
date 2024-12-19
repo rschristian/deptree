@@ -43,6 +43,11 @@ export function App() {
                     label="Twitter Account"
                     iconId="twitter"
                 />
+                <Header.NavItem
+                    href="https://bsky.app/profile/rschristian.dev"
+                    label="Bluesky Account"
+                    iconId="bluesky"
+                />
                 <Header.ThemeToggle />
             </Header>
             <Main widthStyle="flex justify-center w-full lg:max-w-screen-lg">
